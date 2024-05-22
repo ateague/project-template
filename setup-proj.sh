@@ -19,6 +19,9 @@ if [ -d "$1" ]; then
 	echo "Directory $1 already exists. Cancelling."
 	exit
 fi
+if [[ ! "$1" =~ ^[a-zA-Z0-9_]+$ ]]; then
+	echo "Project names should only contain alphanumeric and underscores. Cancelling."
+fi
 
 read -p "Creating $lang project named $1. Continue? (Y/n) " yn
 yn=${yn:-y}
@@ -206,5 +209,7 @@ git add --all
 git commit -m "Project $1 created"
 
 echo
-echo "Remember to:        cd $1; source .venv/bin/activate"
-echo "Probably also want: pip install --editable ."
+source .venv/bin/activate
+pip install pytest
+pip install --editable .
+deactivate
